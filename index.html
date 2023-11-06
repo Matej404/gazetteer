@@ -1,0 +1,191 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<title>Gazetteer</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="AJAX/PHP/CURL/JSON/leaflet">
+		<meta name="Matej Jurin" >
+        <link rel="stylesheet" href="./libs/css/style.css" />
+		<link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css">
+		<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="node_modules\leaflet.markercluster\dist\MarkerCluster.css">
+		<link rel="stylesheet" href="node_modules\leaflet.markercluster\dist\MarkerCluster.Default.css">
+		<link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+		<link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css">
+		<link rel="stylesheet" href="dist/css/leaflet.extra-markers.min.css">
+		<link rel="icon" type="image/png" href="favicon_io/android-chrome-192x192.png">
+		
+	</head>
+
+	<body>	
+		<div id="map">
+			<div class="position-fixed m-3 top-50 start-1 translate-middle-y d-flex flex-column btn-div ">
+				<button id="toggleCountryInfo" class="btn btn-danger mb-3 ">
+					<i class="bi bi-info-square-fill"></i>
+				</button>
+				<button id="toggleCountryWeather" class="btn btn-danger mb-3">
+					<i class="bi bi-cloud-sun"></i>
+				</button>
+				<button id="toggleCountryTimezone" class="btn btn-danger mb-3">
+					<i class="bi bi-globe2"></i>
+				</button>
+				<button id="toggleCountryWikipedia" class="btn btn-danger mb-3">
+					<i class="bi bi-wikipedia"></i>
+				</button>
+				<button id="toggleCurrencyConverter" class="btn btn-danger mb-3">
+					<i class="bi bi-currency-exchange"></i>
+				</button>
+				<button id="toggleCountryNews" class="btn btn-danger">
+					<i class="bi bi-newspaper"></i>
+				</button>
+			</div>
+			<div class="container">
+				<div class="row">
+					<nav class="navbar navbar-expand-lg mx-5 d-flex justify-content-center bg-transparent">
+						<div class="container">
+							<form class="d-flex mx-auto flex-column flex-md-row align-items-center">
+								<select id="select" class="form-select mb-3 mb-md-0 mr-md-3 flex-grow-1">
+									
+								</select>
+							</form>
+						</div>
+					</nav>
+				</div>
+		
+				<!-- Country Info card -->
+				<div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header bg-success">
+								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Country Information</h5>
+								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentInfo">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+		
+				<!-- Weather Info card --> 
+				<div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+					  <div class="modal-content">
+						<div class="modal-header bg-danger">
+						  <h5 class="modal-title fs-2 text-light" id="countryModalLabel">Country Weather</h5>
+						  <button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						  <div id="pre-load"></div>
+						  <div class="row">
+							<div class="col border m-2">
+							  <p id="name" class="fw-bold fs-5 mt-1">CURRENTLY</p>
+							  <div class="row">
+								<div class="col text-center m-3">
+								  <p id="todayConditions" class="fw-bold fs-6"></p>
+								</div>
+								<div class="col text-center">
+								  <img id="todayIcon" class="img-fluid w-100 mt-0" src="" alt="weather" title="">
+								</div>
+								<div class="col text-center">
+								  <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp"></span><sup>o</sup><span class="tempMetric">c</span></p>
+								  <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp"></span><sup>o</sup><span class="tempMetric">c</span></p>
+								</div>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  
+		
+				<!-- Time Zone -->
+				<div class="modal fade" id="TimezoneModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header bg-success">
+								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Time Zone</h5>
+								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentTimezone">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+		
+				<!-- Wikipedia -->
+				<div class="modal fade" id="wikipediaModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header bg-success">
+								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Wikipedia</h5>
+								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentWikipedia">
+								
+							</div>
+						</div>
+					</div>
+				</div>						
+				</div>
+			</div>
+
+			<!-- Currency Converter -->
+			<div class="modal fade" id="currencyConverterModal" tabindex="-1" aria-labelledby="currencyConverterModalLabel" aria-hidden="true">
+    			<div class="modal-dialog modal-dialog-centered">
+        			<div class="modal-content">
+            			<div class="modal-header bg-success">
+                			<h5 class="modal-title fs-2 text-light" id="currencyConverterModalLabel">Currency Converter</h5>
+                			<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            			</div>
+            			<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentCurrencyConverter">
+							<div class="modal-body fs-6">
+								<div class="mb-3">
+									<label for="amountToConvert" class="form-label fs-5">Amount to Convert (USD)</label>
+									<input type="number" id="amountToConvert" class="form-control" placeholder="Enter amount in USD">
+								</div>
+								<div>
+									<h3 class="fs-5 text-secondary" id="convertedResult">
+				
+									</h3>
+								</div>
+							</div>
+            			</div>
+        			</div>
+    			</div>
+			</div> 
+
+			<!-- News Modal -->
+			<div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-md">
+					<div class="modal-content">
+						<div class="modal-header bg-danger text-white">
+							<h5 class="modal-title fs-2" id="newsModalLabel">Breaking News</h5>
+							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="list-group" id="modalContentNews">
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		
+		<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
+		<script type="application/javascript" src="libs/js/script.js"></script>
+		<script src="./node_modules/leaflet/dist/leaflet.js"></script>
+		<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="node_modules\leaflet.markercluster\dist\leaflet.markercluster.js"></script>
+		<script src="dist/js/leaflet.extra-markers.min.js"></script>
+		<script src="node_modules\numeral\min\numeral.min.js"></script>
+	</body>
+</html>
