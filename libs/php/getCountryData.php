@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["iso_a2"])) {
 
     $apiUrl = "{$apiUrl}?{$queryParams}";
 
+    
     // Fetch data from GeoNames API
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -29,11 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["iso_a2"])) {
         "continent" => $countryData["continent"],
         "population" => $countryData["population"],
         "currencyCode" => $countryData["currencyCode"],
-        // Country Cordinates
-        "south" => $countryData["south"],
-        "north" => $countryData["north"],
-        "east" => $countryData["east"],
-        "west" => $countryData["west"]
     ];
 
     header("Content-Type: application/json");

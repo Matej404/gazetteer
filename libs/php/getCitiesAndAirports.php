@@ -1,7 +1,7 @@
 <?php
 // Function to fetch data from GeoNames API
 function fetchGeoNamesData($q, $featureClass) {
-    $username = 'matej404'; // Replace with your GeoNames username
+    $username = 'matej404'; 
     $url = 'http://api.geonames.org/searchJSON?q=' . urlencode($q) . '&featureClass=' . $featureClass . '&username=' . $username;
 
     $response = file_get_contents($url);

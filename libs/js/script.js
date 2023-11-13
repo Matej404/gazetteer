@@ -194,7 +194,7 @@ $(document).ready(function() {
                     loadMarkers(selectedCountry);
                 }
 
-        //OVAJ DIO KODA
+        //OVAJ DIO KODA 
         $.ajax({
             url: 'libs/php/getNewsData.php',
             type: 'POST',
