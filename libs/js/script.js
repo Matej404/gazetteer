@@ -203,13 +203,16 @@ $(document).ready(function() {
             success: function (newsData) {
                 const modalContentNews = $('#modalContentNews');
                 modalContentNews.empty();
+        
                 if (newsData && newsData.results && newsData.results.length > 0) {
-                    //console.log('newsData:', newsData.results);
-
                     newsData.results.forEach(function (result) {
+              
+                        let imageUrl = result.image_url !== null ? result.image_url : 'assets/news.jpg';
+                        let imageTag = `<img src="${imageUrl}" alt="News Image" class="img-fluid rounded" style="width: 45%;" />`;
+
                         let newsItem = `
                             <div class="list-group-item d-flex flex-row justify-content-between">
-                                <img src="${result.image_url}" alt="News Image" class="img-fluid rounded" style="width: 45%;" />
+                                ${imageTag}
                                 <div style="width: 45%;">
                                     <a href="${result.link}" class="fw-bold fs-6 text-black" target="_blank">${result.title}</a> 
                                 </div>
@@ -220,12 +223,11 @@ $(document).ready(function() {
                 } else {
                     modalContentNews.append('<p>No news available for this country.</p>');
                 }
-                
-                
+        
                 $('#toggleCountryNews').on('click', function () {
                     $('#newsModal').modal('toggle');
-                   });
-            },
+                });
+            }, 
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
                 console.error("AJAX Error:", textStatus, errorThrown);
