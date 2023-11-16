@@ -194,7 +194,7 @@ $(document).ready(function() {
                     loadMarkers(selectedCountry);
                 }
 
-        //OVAJ DIO KODA 
+    
         $.ajax({
             url: 'libs/php/getNewsData.php',
             type: 'POST',
@@ -384,38 +384,35 @@ $(document).ready(function() {
                             }
                         });
                     }
+
+                    $.ajax({
+                        url: 'libs/php/getCountryData.php',
+                        type: 'POST',
+                        data: { iso_a2: selectedCountry },
+                        dataType: 'json',
+                        success: function (countryData) {
+                            if (countryData.currencyCode) {
+                                const currencyCode = countryData.currencyCode;
+                                performCurrencyConversion(currencyCode);
+                            }
                     
-
-                $.ajax({
-                    url: 'libs/php/getCountryData.php',
-                    type: 'POST',
-                    data: { iso_a2: selectedCountry },
-                    dataType: 'json',
-                    success: function(countryData) {
-                        if (countryData.currencyCode) {
-                            const currencyCode = countryData.currencyCode;
-            
-                            performCurrencyConversion(currencyCode);
-                        }
-
-                        const modalContentInfo = $('#modalContentInfo');
-                        modalContentInfo.empty();
-                        modalContentInfo.append(`<p><strong>Country:</strong> ${countryData.countryName}</p>`);
-                        modalContentInfo.append(`<p><strong>Capital:</strong> ${countryData.capital}</p>`);
-                        modalContentInfo.append(`<p><strong>Continent:</strong> ${countryData.continent}</p>`);
-                        const formattedPopulation = numeral(countryData.population).format('0,0');
-                        modalContentInfo.append(`<p><strong>Population:</strong> ${formattedPopulation}</p>`);
-                        modalContentInfo.append(`<p><strong>Currency:</strong> ${countryData.currencyCode}</p>`);
-                        
+                            $('#country').text(countryData.countryName);
+                            $('#capitalCity').text(countryData.capital);
+                            $('#continent').text(countryData.continent);
+                            const formattedPopulation = numeral(countryData.population).format('0,0');
+                            $('#population').text(formattedPopulation);
+                            $('#currency').text(countryData.currencyCode);                
+                                                    
                         $('#toggleCountryInfo').on('click', function () {
-                            $('#countryModal').modal('toggle');
+                            $('#countryInfoModal').modal('toggle');
                         });
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR.responseText);
-                        console.error("AJAX Error:", textStatus, errorThrown);
-                    }
-                })
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(jqXHR.responseText);
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                    
                 
                 function performCurrencyConversion(currencyCode) {
                     $.ajax({

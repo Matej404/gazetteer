@@ -58,20 +58,70 @@
 				</div>
 		
 				<!-- Country Info card -->
-				<div class="modal fade" id="countryModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header bg-success">
-								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Country Information</h5>
+				<div class="modal fade" id="countryInfoModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content shadow">
+							<div class="modal-header bg-success bg-gradient text-white">
+								<h5 class="modal-title fs-2 text-light">Country Informations</h5>
 								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentInfo">
-								
+							<div class="modal-body">
+								<div id="pre-load"></div>
+								<table class="table table-striped">
+									<tr>
+										<td class="text-center col-2 fs-5">
+											<i class="bi bi-signpost-fill fa-xl text-success "></i>  
+										</td>
+										<td class="text-nowrap fs-5 text-secondary">
+											Country
+										</td>
+										<td id="country" class="text-end fs-5 text-secondary"></td>
+									</tr>
+									<tr>
+										<td class="text-center col-2 fs-5">
+											<i class="bi bi-buildings-fill fa-xl text-success"></i>  
+										</td>
+										<td class="text-nowrap fs-5 text-secondary">
+											Capital city
+										</td>
+										<td id="capitalCity" class="text-end fs-5 text-secondary"></td>
+									</tr>
+								</tr>
+								<tr>
+									<td class="text-center col-2 fs-5">
+										<i class="bi bi-globe fa-xl text-success"></i>  
+									</td>
+									<td class="text-nowrap fs-5 text-secondary">
+										Continent
+									</td>
+									<td id="continent" class="text-end fs-5 text-secondary"></td>
+								</tr>
+								<tr>
+									<td class="text-center col-2 fs-5">
+										<i class="bi bi-people-fill fa-xl text-success"></i>  
+									</td>
+									<td class="text-nowrap fs-5 text-secondary">
+										Population
+									</td>
+									<td id="population" class="text-end fs-5 text-secondary"></td>
+								</tr>
+								<tr>
+									<td class="text-center col-2 fs-5">
+										<i class="bi bi-currency-exchange fa-xl text-success fs-5"></i>  
+									</td>
+									<td class="text-nowrap fs-5 text-secondary">
+										Currency
+									</td>
+									<td id="currency" class="text-end fs-5 text-secondary"></td>
+								</tr>
+									<!-- Add similar rows for other information using appropriate icons -->
+								</table>
 							</div>
 						</div>
 					</div>
 				</div>
 		
+
 				<!-- Weather Info card --> 
 				<div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered">
@@ -122,7 +172,7 @@
 		
 				<!-- Wikipedia -->
 				<div class="modal fade" id="wikipediaModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 						<div class="modal-content">
 							<div class="modal-header bg-success">
 								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Wikipedia</h5>
@@ -164,7 +214,7 @@
 
 			<!-- News Modal -->
 			<div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-md">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
 					<div class="modal-content">
 						<div class="modal-header bg-danger text-white">
 							<h5 class="modal-title fs-2" id="newsModalLabel">Breaking News</h5>
