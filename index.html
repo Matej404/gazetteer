@@ -114,7 +114,6 @@
 									</td>
 									<td id="currency" class="text-end fs-5 text-secondary"></td>
 								</tr>
-									<!-- Add similar rows for other information using appropriate icons -->
 								</table>
 							</div>
 						</div>
@@ -156,20 +155,49 @@
 				  
 		
 				<!-- Time Zone -->
-				<div class="modal fade" id="TimezoneModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header bg-success">
-								<h5 class="modal-title fs-2 text-light" id="countryModalLabel">Time Zone</h5>
-								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body fs-5 bg-secondary bg-opacity-10 text-secondary" id="modalContentTimezone">
-								
-							</div>
+			<div class="modal fade" id="timezoneModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content shadow">
+						<div class="modal-header bg-success bg-gradient text-white">
+							<h5 id="countryName" class="modal-title fs-2 text-light"></h5>
+							<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div id="pre-load"></div>
+							<table class="table table-striped">
+								<tr>
+									<td class="text-center col-2 fs-5">
+										<i class="bi bi-brightness-alt-high fa-xl text-dark"></i> 
+									</td>
+									<td class="text-nowrap fs-5 text-secondary">
+										Sunrise Time
+									</td>
+									<td id="sunriseTime" class="text-end fs-5 text-secondary"></td>
+								</tr>
+								<tr>
+									<td class="text-center col-2 fs-5">
+										<i class="bi bi bi-brightness-high fa-xl text-dark"></i> 
+									</td>
+									<td class="text-nowrap fs-5 text-secondary">
+										Current Time
+									</td>
+									<td id="currentTime" class="text-end fs-5 text-secondary"></td>
+								</tr>
+								<td class="text-center col-2 fs-5">
+									<i class="bi bi-brightness-alt-high-fill fa-xl text-dark"></i> 
+								</td>
+								<td class="text-nowrap fs-5 text-secondary">
+									Sunset Time
+								</td>
+								<td id="sunsetTime" class="text-end fs-5 text-secondary"></td>
+							</tr>
+							</table>
 						</div>
 					</div>
 				</div>
-		
+			</div>
+
+
 				<!-- Wikipedia -->
 				<div class="modal fade" id="wikipediaModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

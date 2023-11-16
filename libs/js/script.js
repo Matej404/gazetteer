@@ -306,7 +306,6 @@ $(document).ready(function() {
                     }
 
 
-
                     function getTimeZoneData(latitude, longitude) {
                         $.ajax({
                             url: 'libs/php/getTimeZoneData.php', 
@@ -317,28 +316,25 @@ $(document).ready(function() {
                             },
                             dataType: 'json',
                             success: function (timeZoneData) {
-                                const modalContentTimezone = $('#modalContentTimezone');
-                                modalContentTimezone.empty();
-                    
                                 if (timeZoneData) {
-                                    modalContentTimezone.append(`<p><strong>Country:</strong> ${timeZoneData.countryName}</p>`);
-        
+                                    $('#countryName').text(timeZoneData.countryName);
+
                                     const sunriseTime = new Date(timeZoneData.sunrise);
-                                    modalContentTimezone.append(`<p><strong>Sunrise Time:</strong> ${sunriseTime}</p>`); 
-                                    
-                                    const sunsetTime = new Date(timeZoneData.sunset);
-                                    modalContentTimezone.append(`<p><strong>Sunset Time:</strong> ${sunsetTime}</p>`); 
-                            
+                                    $('#sunriseTime').text(formatTimeWithoutTimeZone(sunriseTime));
+
                                     const currentTime = new Date(timeZoneData.time);
-                                    modalContentTimezone.append(`<p><strong>Current Time:</strong> ${currentTime}</p>`); 
+                                    $('#currentTime').text(formatTimeWithoutTimeZone(currentTime));
+
+                                    const sunsetTime = new Date(timeZoneData.sunset);
+                                    $('#sunsetTime').text(formatTimeWithoutTimeZone(sunsetTime));
                                 } else {
                                     modalContentTimezone.append('<p>No time zone data available.</p>');
                                 }
                     
                                 $('#toggleCountryTimezone').on('click', function () {
-                                    $('#TimezoneModal').modal('toggle');
+                                    $('#timezoneModal').modal('toggle');
                                 });
-                            },
+                            }, 
                             error: function (jqXHR, textStatus, errorThrown) {
                                 console.log(jqXHR.responseText);
                                 console.error("AJAX Error:", textStatus, errorThrown);
@@ -346,6 +342,10 @@ $(document).ready(function() {
                         });
                     }
 
+                    function formatTimeWithoutTimeZone(date) {
+                        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    }
+                   
                     
                     function getWikipediaData(latitude, longitude) {
                         $.ajax({
