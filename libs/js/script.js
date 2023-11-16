@@ -415,6 +415,9 @@ $(document).ready(function() {
                     
                 
                 function performCurrencyConversion(currencyCode) {
+                    $('#amountToConvert').val('');
+                    $('#convertedResult').val('');
+
                     $.ajax({
                         url: 'libs/php/getCurrencyConverter.php', 
                         type: 'POST',
@@ -429,7 +432,7 @@ $(document).ready(function() {
                                     const convertedAmount = parseFloat(responseData.convertedAmount);
                                     const amountToConvert = $('#amountToConvert').val();
                                     const result = amountToConvert * convertedAmount;
-                                    $('#convertedResult').text(`Converted amount: ${result.toFixed(2)} ${currencyCode}`);
+                                    $('#convertedResult').val(`${result.toFixed(2)} ${currencyCode}`);
                                     
                                 } else {2
                                     $('#convertedResult').text('Currency conversion failed.');
