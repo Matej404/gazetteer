@@ -151,13 +151,18 @@ $(document).ready(function() {
                 $.each(data.data, function(index, country) {
                     select.append($('<option>', {
                         value: country.iso_a2,
-                        text: country.name
+                        text: country.name,
+                        //countryCode: country.countryCode
                     }));
                 });
             } 
 
             $('#select').on('change', function() {
                 const selectedCountry = $(this).val();
+                const selectedCountryName = $("#select option:selected").text();
+                //const selectedCountryName = $(this).text();
+                console.log(selectedCountry)
+                console.log(selectedCountryName)
                 if (selectedCountry !== '') {
                     markers.clearLayers();
                     
@@ -195,44 +200,44 @@ $(document).ready(function() {
                 }
 
     
-        $.ajax({
-            url: 'libs/php/getNewsData.php',
-            type: 'POST',
-            data: { iso_a2: selectedCountry },
-            dataType: 'json',
-            success: function (newsData) {
-                const modalContentNews = $('#modalContentNews');
-                modalContentNews.empty();
+                $.ajax({
+                    url: 'libs/php/getNewsData.php',
+                    type: 'POST',
+                 data: { iso_a2: selectedCountry },
+                    dataType: 'json',
+                    success: function (newsData) {
+                        const modalContentNews = $('#modalContentNews');
+                        modalContentNews.empty();
         
-                if (newsData && newsData.results && newsData.results.length > 0) {
-                    newsData.results.forEach(function (result) {
+                        if (newsData && newsData.results && newsData.results.length > 0) {
+                            newsData.results.forEach(function (result) {
               
-                        let imageUrl = result.image_url !== null ? result.image_url : 'assets/news.jpg';
-                        let imageTag = `<img src="${imageUrl}" alt="News Image" class="img-fluid rounded" style="width: 45%;" />`;
+                                let imageUrl = result.image_url !== null ? result.image_url : 'assets/news.jpg';
+                                let imageTag = `<img src="${imageUrl}" alt="News Image" class="img-fluid rounded" style="width: 45%;" />`;
 
-                        let newsItem = `
-                            <div class="list-group-item d-flex flex-row justify-content-between">
-                                ${imageTag}
-                                <div style="width: 45%;">
-                                    <a href="${result.link}" class="fw-bold fs-6 text-black" target="_blank">${result.title}</a> 
-                                </div>
-                            </div>
-                        `;
-                        modalContentNews.append(newsItem);
-                    });
-                } else {
-                    modalContentNews.append('<p>No news available for this country.</p>');
-                }
+                                let newsItem = `
+                                    <div class="list-group-item d-flex flex-row justify-content-between">
+                                        ${imageTag}
+                                        <div style="width: 45%;">
+                                            <a href="${result.link}" class="fw-bold fs-6 text-black" target="_blank">${result.title}</a> 
+                                        </div>
+                                    </div>
+                                `;
+                                modalContentNews.append(newsItem);
+                            });
+                        } else {
+                            modalContentNews.append('<p>No news available for this country.</p>');
+                        }
         
-                $('#toggleCountryNews').on('click', function () {
-                    $('#newsModal').modal('toggle');
+                        $('#toggleCountryNews').on('click', function () {
+                            $('#newsModal').modal('toggle');
+                        });
+                    }, 
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText);
+                        console.error("AJAX Error:", textStatus, errorThrown);
+                    }
                 });
-            }, 
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.responseText);
-                console.error("AJAX Error:", textStatus, errorThrown);
-            }
-        });
 
 
                 $.ajax({
@@ -245,7 +250,7 @@ $(document).ready(function() {
                             const latitude = countryCoordinates.latitude;
                             const longitude = countryCoordinates.longitude;
 
-                            getWeatherData(latitude, longitude);
+                            //getWeatherData(latitude, longitude);
                             getTimeZoneData(latitude, longitude);
                             getWikipediaData(latitude, longitude);
                               
@@ -257,53 +262,86 @@ $(document).ready(function() {
                     }
                 }); 
 
-                function getWeatherData(latitude, longitude) {
-                    $.ajax({
-                        url: 'libs/php/getWeatherData.php',
-                        type: 'GET',
-                        data: {
-                            lat: latitude,
-                            lon: longitude
-                        },
-                        dataType: 'json',
-                        success: function (weatherData) {                           
-                            if (weatherData) {
-                                const weatherIcon = $('#todayIcon');
-                                const weatherConditions = $('#todayConditions');
-                                const maxTemperature = $('#todayMaxTemp');
-                                const minTemperature = $('#todayMinTemp');
-                                
-                                const description = weatherData.weather[0].description;
-                                const capitalizedDescription = description.charAt(0).toUpperCase() + description.slice(1);
-                                weatherConditions.text(capitalizedDescription);
-                            
-                                const weatherIconCode = weatherData.weather[0].icon;                        
-                                const weatherIconUrl = `https://openweathermap.org/img/w/${weatherIconCode}.png`;                              
-                                weatherIcon.attr('src', weatherIconUrl);
-                              
-                                const temperatureInKelvinMax = weatherData.main.temp_max;
-                                const temperatureInCelsiusMax = temperatureInKelvinMax - 273.15;
-                                const formattedTemperatureMax = numeral(temperatureInCelsiusMax).format('0,0.00');
-                                maxTemperature.text(formattedTemperatureMax);
 
-                                const temperatureInKelvinMin = weatherData.main.temp_max;
-                                const temperatureInCelsiusMin = temperatureInKelvinMin - 273.15;
-                                const formattedTemperatureMin = numeral(temperatureInCelsiusMin).format('0,0.00');
-                                minTemperature.text(formattedTemperatureMin);
-                            } else {
-                                modalContentWeather.append('<p>No weather data available.</p>');
+
+
+                $.ajax({
+                    url: 'libs/php/getWeather.php',
+                    type: 'GET',
+                    data: { location: selectedCountryName },
+                    dataType: 'json',
+                    success: function (weatherData) {
+                        console.log(weatherData)
+                        if (weatherData) {
+                            const countryCityName = $('#countryCityName');
+                            let country = weatherData.location.country;
+                            let city = weatherData.location.name;
+                            countryCityName.empty();
+                            countryCityName.append(`${country}, ${city}`);
+
+                            if (country === "USA United States of America" && city === "Kingdom City") {
+                                country = "United Kingdom";
+                                city = "London";
+                                countryCityName.empty();
+                                countryCityName.append(`${country}, ${city}`);
                             }
+            
+                            console.log('Country: ', country)
+
+                            const todayConditions = $('#todayConditions');
+                            const todayIcon = $('#todayIcon');
+                            const todayMaxTemp = $('#todayMaxTemp');
+                            const todayMinTemp = $('#todayMinTemp');
+
+                            // Populate today's weather data
+                            const todayWeather = weatherData.forecast.forecastday[0].day;
+                            const todayDescription = todayWeather.condition.text;
+                            const todayMax = todayWeather.maxtemp_c;
+                            const todayMin = todayWeather.mintemp_c;
+                            const todayIconUrl = todayWeather.condition.icon;
+
+                            todayConditions.text(todayDescription);
+                            todayMaxTemp.text(todayMax);
+                            todayMinTemp.text(todayMin);
+                            todayIcon.attr('src', 'https:' + todayIconUrl);
+
+                            // Populate day 1 weather data
+                            const day1Date = $('#day1Date');
+                            const day1MaxTemp = $('#day1MaxTemp');
+                            const day1MinTemp = $('#day1MinTemp');
+                            const day1Icon = $('#day1Icon');
+
+                            const day1Weather = weatherData.forecast.forecastday[1].day;
+                            day1Date.text(weatherData.forecast.forecastday[1].date);
+                            day1MaxTemp.text(day1Weather.maxtemp_c);
+                            day1MinTemp.text(day1Weather.mintemp_c);
+                            day1Icon.attr('src', 'https:' + day1Weather.condition.icon);
+
+                            // Populate day 2 weather data
+                            const day2Date = $('#day2Date');
+                            const day2MaxTemp = $('#day2MaxTemp');
+                            const day2MinTemp = $('#day2MinTemp');
+                            const day2Icon = $('#day2Icon');
+
+                            const day2Weather = weatherData.forecast.forecastday[2].day;
+                            day2Date.text(weatherData.forecast.forecastday[2].date);
+                            day2MaxTemp.text(day2Weather.maxtemp_c);
+                            day2MinTemp.text(day2Weather.mintemp_c);
+                            day2Icon.attr('src', 'https:' + day2Weather.condition.icon);
 
                             $('#toggleCountryWeather').on('click', function () {
-                                 $('#weatherModal').modal('toggle');
-                                });
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                console.log(jqXHR.responseText);
-                                console.error("AJAX Error:", textStatus, errorThrown);
-                            }                            
-                        });
+                            $('#weatherModal').modal('toggle');
+                            });
+                        } else {
+                            modalContentWeather.append('<p>No weather data available.</p>');
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR.responseText);
+                        console.error("AJAX Error:", textStatus, errorThrown);
                     }
+                });
+
 
 
                     function getTimeZoneData(latitude, longitude) {
@@ -434,7 +472,7 @@ $(document).ready(function() {
                                     const result = amountToConvert * convertedAmount;
                                     $('#convertedResult').val(`${result.toFixed(2)} ${currencyCode}`);
                                     
-                                } else {2
+                                } else {
                                     $('#convertedResult').text('Currency conversion failed.');
                                 }
                             }) 

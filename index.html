@@ -123,79 +123,114 @@
 
 				<!-- Weather Info card --> 
 				<div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-					  <div class="modal-content">
-						<div class="modal-header bg-danger">
-						  <h5 class="modal-title fs-2 text-light" id="countryModalLabel">Country Weather</h5>
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					  <div class="modal-content shadow">      	  
+						<div class="modal-header bg-primary bg-gradient text-white">
+						  <h5 class="modal-title fs-2 text-light" id="countryCityName"></h5>
 						  <button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body">						  
 						  <div id="pre-load"></div>
 						  <div class="row">
-							<div class="col border m-2">
-							  <p id="name" class="fw-bold fs-5 mt-1">CURRENTLY</p>
-							  <div class="row">
-								<div class="col text-center m-3">
-								  <p id="todayConditions" class="fw-bold fs-6"></p>
-								</div>
-								<div class="col text-center">
-								  <img id="todayIcon" class="img-fluid w-100 mt-0" src="" alt="weather" title="">
-								</div>
-								<div class="col text-center">
-								  <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp"></span><sup>o</sup><span class="tempMetric">c</span></p>
-								  <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp"></span><sup>o</sup><span class="tempMetric">c</span></p>
-								</div>
-							  </div>
-							</div>
+							<div class="col border m-2">				  
+							  <p class="fw-bold fs-5 mt-1">TODAY</p>							  
+							  <div class="row">								
+								<div class="col text-center m-3">								  
+								  <p id="todayConditions" class="fw-bold fs-6"></p>									
+								</div>								
+								<div class="col text-center">								  
+								  <img id="todayIcon" class="img-fluid mt-0" src="" alt="" title="">									
+								</div>              				  
+								<div class="col text-center">								  
+								  <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp">3</span><sup>o</sup><span class="tempMetric">c</span></p>
+								  <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp">-2</span><sup>o</sup><span class="tempMetric">c</span></p>									
+								</div>              								
+							  </div>			  
+							</div>   			  
 						  </div>
+				  
+						  <div class="row">				  
+							<div class="col border m-2">							  
+							  <div class="row">								
+								<div class="col text-center">				  
+								  <p id="day1Date" class="fw-bold fs-6 mt-3"></p>								  
+								</div>								
+							  </div>
+							  <div class="row">	
+								<div class="col text-center">  
+								  <p class="fw-bold fs-4 mb-0"><span id="day1MaxTemp"></span><sup>o</sup>c</p>
+								  <p class="fs-5 mt-0 text-secondary"><span id="day1MinTemp"></span><sup>o</sup>c</p>	  
+								</div>					
+								<div class="col text-center">								  
+								  <img id="day1Icon" src="" alt="" title="">								  
+								</div>    								
+							  </div>							  
+							</div>   
+							<div class="col border m-2">
+							  <div class="row">								
+								<div class="col text-center">				  
+								  <p id="day2Date" class="fw-bold fs-6 mt-3"></p>								  
+								</div>								
+							  </div>							  
+							  <div class="row">								
+								<div class="col text-center">								  
+								  <p class="fw-bold fs-4 mb-0"><span id="day2MaxTemp"></span><sup>o</sup>c</p>
+								  <p class="fs-5 mt-0 text-secondary"><span id="day2MinTemp"></span><sup>o</sup>c</p>								  
+								</div>					
+								<div class="col text-center">								  
+								  <img id="day2Icon" src="" alt="" title="">								  
+								</div>    							
+							  </div>							  
+							</div>         				  
+						 </div>   					  
 						</div>
-					  </div>
+					  </div>	
 					</div>
-				  </div>
+				</div>  
 				  
 		
 				<!-- Time Zone -->
-			<div class="modal fade" id="timezoneModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-					<div class="modal-content shadow">
-						<div class="modal-header bg-success bg-gradient text-white">
-							<h5 id="countryName" class="modal-title fs-2 text-light"></h5>
-							<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div id="pre-load"></div>
-							<table class="table table-striped">
-								<tr>
+				<div class="modal fade" id="timezoneModal" tabindex="-1" aria-labelledby="countryModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content shadow">
+							<div class="modal-header bg-success bg-gradient text-white">
+								<h5 id="countryName" class="modal-title fs-2 text-light"></h5>
+								<button type="button" class="btn-close fs-5 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<div id="pre-load"></div>
+								<table class="table table-striped">
+									<tr>
+										<td class="text-center col-2 fs-5">
+											<i class="bi bi-brightness-alt-high fa-xl text-dark"></i> 
+										</td>
+										<td class="text-nowrap fs-5 text-secondary">
+											Sunrise Time
+										</td>
+										<td id="sunriseTime" class="text-end fs-5 text-secondary"></td>
+									</tr>
+									<tr>
+										<td class="text-center col-2 fs-5">
+											<i class="bi bi bi-brightness-high fa-xl text-dark"></i> 
+										</td>
+										<td class="text-nowrap fs-5 text-secondary">
+											Current Time
+										</td>
+										<td id="currentTime" class="text-end fs-5 text-secondary"></td>
+									</tr>
 									<td class="text-center col-2 fs-5">
-										<i class="bi bi-brightness-alt-high fa-xl text-dark"></i> 
+										<i class="bi bi-brightness-alt-high-fill fa-xl text-dark"></i> 
 									</td>
 									<td class="text-nowrap fs-5 text-secondary">
-										Sunrise Time
+										Sunset Time
 									</td>
-									<td id="sunriseTime" class="text-end fs-5 text-secondary"></td>
+									<td id="sunsetTime" class="text-end fs-5 text-secondary"></td>
 								</tr>
-								<tr>
-									<td class="text-center col-2 fs-5">
-										<i class="bi bi bi-brightness-high fa-xl text-dark"></i> 
-									</td>
-									<td class="text-nowrap fs-5 text-secondary">
-										Current Time
-									</td>
-									<td id="currentTime" class="text-end fs-5 text-secondary"></td>
-								</tr>
-								<td class="text-center col-2 fs-5">
-									<i class="bi bi-brightness-alt-high-fill fa-xl text-dark"></i> 
-								</td>
-								<td class="text-nowrap fs-5 text-secondary">
-									Sunset Time
-								</td>
-								<td id="sunsetTime" class="text-end fs-5 text-secondary"></td>
-							</tr>
-							</table>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
 
 				<!-- Wikipedia -->
