@@ -271,7 +271,6 @@ $(document).ready(function() {
                     data: { location: selectedCountryName },
                     dataType: 'json',
                     success: function (weatherData) {
-                        console.log(weatherData)
                         if (weatherData) {
                             const countryCityName = $('#countryCityName');
                             let country = weatherData.location.country;
@@ -284,9 +283,7 @@ $(document).ready(function() {
                                 city = "London";
                                 countryCityName.empty();
                                 countryCityName.append(`${country}, ${city}`);
-                            }
-            
-                            console.log('Country: ', country)
+                            }                     
 
                             const todayConditions = $('#todayConditions');
                             const todayIcon = $('#todayIcon');
