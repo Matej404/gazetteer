@@ -290,8 +290,10 @@ $(document).ready(function() {
                             // Populate today's weather data
                             const todayWeather = weatherData.forecast.forecastday[0].day;
                             const todayDescription = todayWeather.condition.text;
-                            const todayMax = todayWeather.maxtemp_c;
-                            const todayMin = todayWeather.mintemp_c;
+                            const todayMax = Math.round(todayWeather.maxtemp_c);
+                            todayMaxTemp.text(todayMax);
+                            const todayMin = Math.round(todayWeather.mintemp_c);
+                            todayMinTemp.text(todayMin);
                             const todayIconUrl = todayWeather.condition.icon;
 
                             todayConditions.text(todayDescription);
@@ -308,8 +310,10 @@ $(document).ready(function() {
                             const day1Weather = weatherData.forecast.forecastday[1].day;
                             const day1DateValue = moment(weatherData.forecast.forecastday[1].date).format('ddd Do');
                             day1Date.text(day1DateValue);
-                            day1MaxTemp.text(day1Weather.maxtemp_c);
-                            day1MinTemp.text(day1Weather.mintemp_c);
+                            const day1Max = Math.round(day1Weather.maxtemp_c);
+                            day1MaxTemp.text(day1Max);
+                            const day1Min = Math.round(day1Weather.mintemp_c);
+                            day1MinTemp.text(day1Min);
                             day1Icon.attr('src', 'https:' + day1Weather.condition.icon);
 
                             // Populate day 2 weather data
@@ -321,8 +325,10 @@ $(document).ready(function() {
                             const day2Weather = weatherData.forecast.forecastday[2].day;
                             const day2DateValue = moment(weatherData.forecast.forecastday[2].date).format('ddd Do');
                             day2Date.text(day2DateValue);
-                            day2MaxTemp.text(day2Weather.maxtemp_c);
-                            day2MinTemp.text(day2Weather.mintemp_c);
+                            const day2Max = Math.round(day2Weather.maxtemp_c)
+                            day2MaxTemp.text(day2Max);
+                            const day2Min = Math.round(day2Weather.mintemp_c)
+                            day2MinTemp.text(day2Min);
                             day2Icon.attr('src', 'https:' + day2Weather.condition.icon);
 
                             $('#toggleCountryWeather').on('click', function () {
