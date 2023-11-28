@@ -43,3 +43,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["iso_a2"]) && isset($_
     echo json_encode(["error" => "Invalid request parameters."]);
 }
 ?>
+

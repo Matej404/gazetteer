@@ -160,9 +160,7 @@ $(document).ready(function() {
             $('#select').on('change', function() {
                 const selectedCountry = $(this).val();
                 const selectedCountryName = $("#select option:selected").text();
-                //const selectedCountryName = $(this).text();
-                console.log(selectedCountry)
-                console.log(selectedCountryName)
+
                 if (selectedCountry !== '') {
                     markers.clearLayers();
                     
@@ -250,7 +248,6 @@ $(document).ready(function() {
                             const latitude = countryCoordinates.latitude;
                             const longitude = countryCoordinates.longitude;
 
-                            //getWeatherData(latitude, longitude);
                             getTimeZoneData(latitude, longitude);
                             getWikipediaData(latitude, longitude);
                               
@@ -309,7 +306,8 @@ $(document).ready(function() {
                             const day1Icon = $('#day1Icon');
 
                             const day1Weather = weatherData.forecast.forecastday[1].day;
-                            day1Date.text(weatherData.forecast.forecastday[1].date);
+                            const day1DateValue = moment(weatherData.forecast.forecastday[1].date).format('ddd Do');
+                            day1Date.text(day1DateValue);
                             day1MaxTemp.text(day1Weather.maxtemp_c);
                             day1MinTemp.text(day1Weather.mintemp_c);
                             day1Icon.attr('src', 'https:' + day1Weather.condition.icon);
@@ -321,7 +319,8 @@ $(document).ready(function() {
                             const day2Icon = $('#day2Icon');
 
                             const day2Weather = weatherData.forecast.forecastday[2].day;
-                            day2Date.text(weatherData.forecast.forecastday[2].date);
+                            const day2DateValue = moment(weatherData.forecast.forecastday[2].date).format('ddd Do');
+                            day2Date.text(day2DateValue);
                             day2MaxTemp.text(day2Weather.maxtemp_c);
                             day2MinTemp.text(day2Weather.mintemp_c);
                             day2Icon.attr('src', 'https:' + day2Weather.condition.icon);
@@ -420,6 +419,8 @@ $(document).ready(function() {
                         });
                     }
 
+                    let globalCurrencyCode = '';
+
                     $.ajax({
                         url: 'libs/php/getCountryData.php',
                         type: 'POST',
@@ -427,8 +428,8 @@ $(document).ready(function() {
                         dataType: 'json',
                         success: function (countryData) {
                             if (countryData.currencyCode) {
-                                const currencyCode = countryData.currencyCode;
-                                performCurrencyConversion(currencyCode);
+                                 globalCurrencyCode = countryData.currencyCode;
+                                console.log(globalCurrencyCode);
                             }
                     
                             $('#country').text(countryData.countryName);
@@ -447,43 +448,54 @@ $(document).ready(function() {
                             console.error("AJAX Error:", textStatus, errorThrown);
                         }
                     });
+
+
+                    //here
+                        
+                    $('#currencyConverterModal').on('show.bs.modal', function (e) {
+                        let selectedCountry = $('#select').val();
+                        
+                        $('#amountToConvert').val('');
+                        $('#convertedResult').val('');
                     
-                
-                function performCurrencyConversion(currencyCode) {
-                    $('#amountToConvert').val('');
-                    $('#convertedResult').val('');
-
-                    $.ajax({
-                        url: 'libs/php/getCurrencyConverter.php', 
-                        type: 'POST',
-                        data: {
-                            iso_a2: selectedCountry,
-                            currencyCode: currencyCode,
-                        },
-                        dataType: 'json',
-                        success: function (responseData) {
-                            $('#amountToConvert').on('input', function () {
-                                if (responseData && responseData.convertedAmount) {
-                                    const convertedAmount = parseFloat(responseData.convertedAmount);
-                                    const amountToConvert = $('#amountToConvert').val();
-                                    const result = amountToConvert * convertedAmount;
-                                    $('#convertedResult').val(`${result.toFixed(2)} ${currencyCode}`);
-                                    
-                                } else {
-                                    $('#convertedResult').text('Currency conversion failed.');
+                        function performCurrencyConversion(selectedCountry, currencyCode) {
+                            $.ajax({
+                                url: 'libs/php/getCurrencyConverter.php',
+                                type: 'POST',
+                                data: {
+                                    iso_a2: selectedCountry,
+                                    currencyCode: currencyCode,
+                                },
+                                dataType: 'json',
+                                success: function (responseData) {
+                                    updateConversionResult(responseData, currencyCode);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(jqXHR.responseText);
+                                    console.error("AJAX Error:", textStatus, errorThrown);
                                 }
-                            }) 
-
-                            $('#toggleCurrencyConverter').on('click', function () {
-                                $('#currencyConverterModal').modal('toggle');
                             });
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.log(jqXHR.responseText);
-                            console.error("AJAX Error:", textStatus, errorThrown);
                         }
+
+
+                        function updateConversionResult(responseData, currencyCode) {
+                            if (responseData && responseData.convertedAmount) {
+                                const convertedAmount = parseFloat(responseData.convertedAmount);
+                                const amountToConvert = $('#amountToConvert').val() || 0;
+                                const result = amountToConvert * convertedAmount;
+                                $('#convertedResult').val(`${result.toFixed(2)} ${currencyCode}`);
+                            } else {
+                                $('#convertedResult').val('Currency conversion failed.');
+                            }
+                        }
+
+                        performCurrencyConversion(selectedCountry, globalCurrencyCode);
+
+                        $('#amountToConvert').on('input', function() {
+                            performCurrencyConversion(selectedCountry, globalCurrencyCode);
+                        });
                     });
-                }
+                    
             });            
 
 
