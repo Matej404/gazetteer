@@ -1,6 +1,7 @@
 $(document).ready(function() {
     let map;
-    let markers;
+    //let markers;
+    let markers = L.layerGroup();
     let countryBordersLayer = L.geoJSON();
 
     function initializeMap() {
@@ -8,6 +9,7 @@ $(document).ready(function() {
         const longitude = 0; 
 
         map = L.map('map').setView([latitude, longitude], 13);
+        
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -65,8 +67,10 @@ $(document).ready(function() {
     };
    
 
-    const cityMarkers = L.layerGroup();
-    const airportMarkers = L.layerGroup();
+    //const cityMarkers = L.layerGroup();
+    //const airportMarkers = L.layerGroup();
+    let cityMarkers = L.markerClusterGroup();
+    let airportMarkers = L.markerClusterGroup();
     let layerControl;
    
     function loadMarkers(selectedCountry) {
@@ -104,7 +108,7 @@ $(document).ready(function() {
                             icon: cityMarkerIcon
                         });
                         marker.bindPopup(`<b>${cityMarker.name}</b><br>${cityMarker.countryName}`);
-                        markers.addLayer(marker);
+                        cityMarkers.addLayer(marker);
                     });
                 }
         
@@ -114,7 +118,7 @@ $(document).ready(function() {
                             icon: airportMarkerIcon
                         });
                         marker.bindPopup(`<b>${airportMarker.name}</b><br>${airportMarker.countryName}`);
-                        markers.addLayer(marker);
+                        airportMarkers.addLayer(marker);
                     });
                 }
         
