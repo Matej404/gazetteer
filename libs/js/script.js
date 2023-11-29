@@ -104,7 +104,7 @@ $(document).ready(function() {
                             icon: cityMarkerIcon
                         });
                         marker.bindPopup(`<b>${cityMarker.name}</b><br>${cityMarker.countryName}`);
-                        cityMarkers.addLayer(marker);
+                        markers.addLayer(marker);
                     });
                 }
         
@@ -114,7 +114,7 @@ $(document).ready(function() {
                             icon: airportMarkerIcon
                         });
                         marker.bindPopup(`<b>${airportMarker.name}</b><br>${airportMarker.countryName}`);
-                        airportMarkers.addLayer(marker);
+                        markers.addLayer(marker);
                     });
                 }
         
@@ -152,7 +152,6 @@ $(document).ready(function() {
                     select.append($('<option>', {
                         value: country.iso_a2,
                         text: country.name,
-                        //countryCode: country.countryCode
                     }));
                 });
             } 
@@ -435,7 +434,6 @@ $(document).ready(function() {
                         success: function (countryData) {
                             if (countryData.currencyCode) {
                                  globalCurrencyCode = countryData.currencyCode;
-                                console.log(globalCurrencyCode);
                             }
                     
                             $('#country').text(countryData.countryName);
