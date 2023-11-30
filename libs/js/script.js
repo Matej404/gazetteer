@@ -1,25 +1,36 @@
 $(document).ready(function() {
     let map;
-    //let markers;
     let markers = L.layerGroup();
     let countryBordersLayer = L.geoJSON();
+    let layerControlMap;
 
-    function initializeMap() {
-        const latitude = 0; 
-        const longitude = 0; 
+function initializeMap() {
+    const latitude = 0; 
+    const longitude = 0; 
 
-        map = L.map('map').setView([latitude, longitude], 13);
-        
+    map = L.map('map').setView([latitude, longitude], 13);
+    
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
+    const streetMapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    });
 
-        markers = L.markerClusterGroup();
-        map.addLayer(markers);
-    }
+    const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
 
+    streetMapLayer.addTo(map);
+
+    markers = L.markerClusterGroup();
+    map.addLayer(markers);
+
+    const baseMaps = {
+        "Street Map": streetMapLayer,
+        "Satellite Map": satelliteLayer
+    };
+    layerControlMap = L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
+}
     initializeMap();
     
     function handleGeolocation() {    
@@ -67,8 +78,6 @@ $(document).ready(function() {
     };
    
 
-    //const cityMarkers = L.layerGroup();
-    //const airportMarkers = L.layerGroup();
     let cityMarkers = L.markerClusterGroup();
     let airportMarkers = L.markerClusterGroup();
     let layerControl;
@@ -125,12 +134,12 @@ $(document).ready(function() {
                 map.addLayer(cityMarkers);
                 map.addLayer(airportMarkers);
 
-                const baseLayers = {
+                const overlyMaps = {
                     "Cities": cityMarkers,
                     "Airports": airportMarkers
                 };
                   
-                layerControl = L.control.layers(null, baseLayers, { collapsed: false }).addTo(map);            
+                layerControl = L.control.layers(null, overlyMaps, { collapsed: false }).addTo(map);            
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.responseText);
@@ -458,7 +467,6 @@ $(document).ready(function() {
                     });
 
 
-                    //here
                         
                     $('#currencyConverterModal').on('show.bs.modal', function (e) {
                         let selectedCountry = $('#select').val();
